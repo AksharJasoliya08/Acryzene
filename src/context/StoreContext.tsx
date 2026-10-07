@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import { createContext, useContext, useReducer, type ReactNode, type Dispatch } from 'react';
 import { Product, CartItem, WishlistItem, User, Address } from '../types';
 import { currentUser } from '../data/mockData';
 
@@ -119,9 +119,9 @@ interface StoreContextType {
   cart: CartState;
   wishlist: WishlistState;
   auth: AuthState;
-  dispatchCart: React.Dispatch<CartAction>;
-  dispatchWishlist: React.Dispatch<WishlistAction>;
-  dispatchAuth: React.Dispatch<AuthAction>;
+  dispatchCart: Dispatch<CartAction>;
+  dispatchWishlist: Dispatch<WishlistAction>;
+  dispatchAuth: Dispatch<AuthAction>;
   cartTotal: number;
   cartCount: number;
   isInWishlist: (productId: string) => boolean;
