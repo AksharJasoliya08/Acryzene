@@ -1,9 +1,12 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Heart, ShoppingCart, Star, Minus, Plus, Truck, Shield, RotateCcw, Share2, Check, MapPin } from 'lucide-react';
 import { products } from '../data/mockData';
 import { useStore } from '../context/StoreContext';
 import ProductCard from '../components/ProductCard';
+import RecentlyViewed, { addToRecentlyViewed } from '../components/RecentlyViewed';
+import ReviewSection from '../components/ReviewSection';
+import { pincodeService } from '../services/PincodeService';
 import { motion } from 'framer-motion';
 
 export default function ProductPage() {
@@ -15,6 +18,20 @@ export default function ProductPage() {
   const [pincode, setPincode] = useState('');
   const [pincodeResult, setPincodeResult] = useState<null | { available: boolean; date: string; cod: boolean }>(null);
   const [addedToCart, setAddedToCart] = useState(false);
+
+  // Track recently viewed product
+  useEffect(() => {
+    if (product) {
+      addToRecentlyViewed(product);
+      // Update page title for SEO
+      document.title = `${product.name} - Katargam Store`;
+      // Update meta description
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', product.shortDescription);
+      }
+    }
+  }, [product]);
 
   if (!product) {
     return (
@@ -38,9 +55,14 @@ export default function ProductPage() {
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
-  const checkPincode = () => {
+  const checkPincode = async () => {
     if (pincode.length === 6) {
-      setPincodeResult({ available: true, date: 'Mar 30 - Apr 1', cod: true });
+      const result = await pincodeService.checkPincode(pincode);
+      setPincodeResult({
+        available: result.available,
+        date: result.estimatedDelivery,
+        cod: result.codAvailable,
+      });
     }
   };
 
@@ -204,28 +226,11 @@ export default function ProductPage() {
 
       {/* Reviews */}
       <div className="mt-8 bg-white rounded-2xl p-6 border border-gray-100">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Customer Reviews ({product.reviewCount})</h2>
-        <div className="space-y-4">
-          {[
-            { name: 'Rahul S.', rating: 5, text: 'Excellent product! Quality is top-notch and delivery was fast.', date: '2 days ago' },
-            { name: 'Priya M.', rating: 4, text: 'Good value for money. Works as described. Would recommend.', date: '1 week ago' },
-            { name: 'Amit K.', rating: 5, text: 'Best purchase this month! Highly satisfied with the quality.', date: '2 weeks ago' },
-          ].map((review, i) => (
-            <div key={i} className="border-b border-gray-100 pb-4 last:border-0">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="flex">{[...Array(5)].map((_, j) => (
-                    <Star key={j} size={14} className={j < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'} />
-                  ))}</div>
-                  <span className="text-sm font-medium text-gray-900">{review.name}</span>
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Verified</span>
-                </div>
-                <span className="text-xs text-gray-500">{review.date}</span>
-              </div>
-              <p className="text-gray-600 text-sm">{review.text}</p>
-            </div>
-          ))}
-        </div>
+        <ReviewSection
+          productId={product.id}
+          productRating={product.rating}
+          reviewCount={product.reviewCount}
+        />
       </div>
 
       {/* Related Products */}
@@ -237,6 +242,9 @@ export default function ProductPage() {
           </div>
         </div>
       )}
+
+      {/* Recently Viewed Products */}
+      <RecentlyViewed currentProductId={product.id} limit={4} className="mt-12" />
 
       {/* Mobile Sticky Bar */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-3 flex gap-3 lg:hidden z-40">
