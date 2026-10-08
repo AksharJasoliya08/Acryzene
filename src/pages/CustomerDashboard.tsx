@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { User, Package, MapPin, Heart, Settings, LogOut } from 'lucide-react';
+import { User, Package, MapPin, Heart, Settings, LogOut, RotateCcw } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { orders } from '../data/mockData';
 
@@ -37,6 +37,7 @@ export default function CustomerDashboard() {
               { id: 'orders', icon: <Package size={18} />, label: 'My Orders' },
               { id: 'addresses', icon: <MapPin size={18} />, label: 'Addresses' },
               { id: 'wishlist', icon: <Heart size={18} />, label: 'Wishlist' },
+              { id: 'returns', icon: <RotateCcw size={18} />, label: 'Returns' },
               { id: 'profile', icon: <Settings size={18} />, label: 'Profile Settings' },
             ].map(item => (
               <Link key={item.id} to={`/account/${item.id}`}
@@ -112,6 +113,14 @@ export default function CustomerDashboard() {
               <Heart size={48} className="mx-auto text-gray-300 mb-3" />
               <p className="text-gray-500">View your wishlist items</p>
               <Link to="/wishlist" className="text-indigo-600 mt-2 inline-block hover:underline">Go to Wishlist →</Link>
+            </div>
+          )}
+
+          {activeTab === 'returns' && (
+            <div className="text-center py-12">
+              <RotateCcw size={48} className="mx-auto text-gray-300 mb-3" />
+              <p className="text-gray-500">Manage your return requests</p>
+              <Link to="/returns" className="text-indigo-600 mt-2 inline-block hover:underline">Go to Returns →</Link>
             </div>
           )}
 

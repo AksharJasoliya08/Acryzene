@@ -120,6 +120,7 @@ export default function Layout() {
                     className="block py-2 text-gray-700">{cat.name}</Link>
                 ))}
                 <Link to="/wishlist" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-700">Wishlist ({wishlist.items.length})</Link>
+                <Link to="/returns" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-700">Returns</Link>
                 <Link to="/account" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-700">My Account</Link>
                 <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-indigo-600 font-medium">Admin Panel</Link>
               </nav>

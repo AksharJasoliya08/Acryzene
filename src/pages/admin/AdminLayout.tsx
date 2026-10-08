@@ -2,14 +2,19 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Package, ShoppingCart, Users, Tag, Download, Settings, LogOut, Menu, X, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import NotificationBell from '../../components/NotificationBell';
+
+import { RotateCcw, FileText } from 'lucide-react';
 
 const navItems = [
   { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
   { path: '/admin/products', icon: <Package size={20} />, label: 'Products' },
   { path: '/admin/orders', icon: <ShoppingCart size={20} />, label: 'Orders' },
+  { path: '/admin/returns', icon: <RotateCcw size={20} />, label: 'Returns' },
   { path: '/admin/customers', icon: <Users size={20} />, label: 'Customers' },
   { path: '/admin/coupons', icon: <Tag size={20} />, label: 'Coupons' },
   { path: '/admin/import', icon: <Download size={20} />, label: 'Product Import' },
+  { path: '/admin/activity-log', icon: <FileText size={20} />, label: 'Activity Log' },
   { path: '/admin/settings', icon: <Settings size={20} />, label: 'Settings' },
 ];
 
@@ -65,7 +70,9 @@ export default function AdminLayout() {
               {navItems.find(n => n.path === location.pathname)?.label || 'Dashboard'}
             </h2>
           </div>
-          <div className="relative">
+          <div className="flex items-center gap-3">
+            <NotificationBell />
+            <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-2 text-sm">
               <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
                 <span className="text-indigo-600 font-bold text-xs">A</span>
@@ -84,6 +91,7 @@ export default function AdminLayout() {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
           </div>
         </header>
 

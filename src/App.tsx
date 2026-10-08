@@ -8,6 +8,7 @@ import WishlistPage from './pages/WishlistPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import CustomerDashboard from './pages/CustomerDashboard';
+import ReturnsPage from './pages/ReturnsPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
@@ -16,6 +17,8 @@ import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminCoupons from './pages/admin/AdminCoupons';
 import AdminImport from './pages/admin/AdminImport';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminReturns from './pages/admin/AdminReturns';
+import AdminActivityLog from './pages/admin/AdminActivityLog';
 import Layout from './components/Layout';
 
 export default function App() {
@@ -34,6 +37,8 @@ export default function App() {
             <Route path="/order-success/:orderId" element={<OrderSuccessPage />} />
             <Route path="/account" element={<CustomerDashboard />} />
             <Route path="/account/:tab" element={<CustomerDashboard />} />
+            <Route path="/returns" element={<ReturnsPage />} />
+            <Route path="/returns/:id" element={<ReturnsPage />} />
           </Route>
 
           {/* Admin Routes */}
@@ -45,6 +50,8 @@ export default function App() {
             <Route path="coupons" element={<AdminCoupons />} />
             <Route path="import" element={<AdminImport />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="returns" element={<AdminReturns />} />
+            <Route path="activity-log" element={<AdminActivityLog />} />
           </Route>
         </Routes>
       </BrowserRouter>
